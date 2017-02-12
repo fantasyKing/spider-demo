@@ -1,6 +1,6 @@
 import spiderCompanySites from './spiderCompanySites';
 import spiderCompanyInfo from './spiderCompanyInfo';
-import { writeJson } from './utils/';
+import { writeJson, compute } from './utils/';
 
 async function main() {
   try {
@@ -17,6 +17,7 @@ async function main() {
       json[`page${i}`] = companyinfo;
       await writeJson.write('./companies.json', json, {});
     }
+    console.log('compute', compute.getHireSiteNum());
   } catch (err) {
     console.log('main.err--->', err);
   }

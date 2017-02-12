@@ -1,5 +1,7 @@
 import Crawler from 'crawler';
 
+import { urlUtil, compute } from './utils';
+
 export default new class {
   constructor() {
     this.c = new Crawler({
@@ -29,26 +31,30 @@ export default new class {
     });
   }
 
-  async spiderCompanySites(website) {
+  async spiderHireSites(website) {
     return new Promise((resolve, reject) => {
       this.c.queue([{
-        uri: website || 'http://www.itjuzi.com/investevents',
+        uri: website,
         callback: (err, res, done) => {
           if (err) {
             console.log('Crawler.error', err);
             done();
-            return reject(err);
+            return resolve('');
           }
           console.log('Crawler.success');
           const $ = res.$;
-          const liEleArr = $('i.cell.pic a');
-          const companySiteArr = liEleArr.map(function each() {
-            return $(this).attr('href');
-          }).get();
-          // console.log(companySiteArr);
-          // c.queue(companySiteArr);
+          const companySite = $('a');
+          const site = companySite.filter(function filter() {
+            return $(this).text().replace(/\n+|\t+/ig, '') === '加入我们';
+          }).attr('href');
+          const hireSite = urlUtil.complete(site, website);
+          console.log('conpanySIte', website);
+          console.log('companyHireSite', hireSite);
+          if (hireSite) {
+            compute.addHireSiteNum();
+          }
           done();
-          return resolve(companySiteArr);
+          return resolve(urlUtil.complete(site, website));
         }
       }]);
     });

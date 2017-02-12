@@ -22,7 +22,7 @@ test.skip('spider', async t => {
   }
 });
 
-test('writeJson', async t => {
+test.skip('writeJson', async t => {
   try {
     const json = await writeJson.read('./companies.json');
     console.log('json', json);

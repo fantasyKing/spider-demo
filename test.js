@@ -1,4 +1,5 @@
 import Crawler from 'crawler';
+import { urlUtil } from './utils/';
 
 const c = new Crawler({
   method: 'GET',
@@ -15,30 +16,18 @@ const c = new Crawler({
   jar: true,
   maxConnections: 1,
   // This will be called for each crawled page
-  callback: (err, res, done) => {
+  callback: async (err, res, done) => {
     if (err) {
       console.log('Crawler.error', err);
       return done();
     }
     console.log('Crawler.success');
     const $ = res.$;
-    // console.log($('div.picinfo b').text().trim().replace(/\n+|\t+/ig, ''));
-    // const address = $('div.picinfo .loca').text().trim().replace(/\n+|\t+/ig, '');
-    // console.log(address);
-    // const companySiteArr = liEleArr.map(function each() {
-    //   return $(this).attr('href');
-    // }).get();
-    // console.log(companySiteArr);
-    // this.c.queue(companySiteArr);
-    // console.log('liEleArr', productName);
-    // console.log('address', address);
-    // console.log($('div.des-more div:first-child').text().trim()
-    // .replace(/\n+|\t+/ig, '')
-    // .split('公司全称：')
-    // .join(''));
-    const companySite = $('div.link-line a.weblink').text().trim()
-          .replace(/\n+|\t+/ig, '');
-    console.log('companySite', companySite);
+    const companySite = $('a');
+    const site = companySite.filter(function filter() {
+      return $(this).text().replace(/\n+|\t+/ig, '') === '加入我们';
+    }).attr('href');
+    console.log('companySite', urlUtil.complete(site, 'http://www.umiaowu.com/'));
     return done();
   }
 });
@@ -46,6 +35,6 @@ const c = new Crawler({
 // c.queue('http://www.itjuzi.com/company/58667');
 
 c.queue([{
-  uri: 'http://www.itjuzi.com/company/15751'
+  uri: 'http://www.umiaowu.com'
   // proxy: 'http://127.0.0.1:1080'
 }]);

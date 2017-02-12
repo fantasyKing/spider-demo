@@ -1,5 +1,7 @@
 import Crawler from 'crawler';
 
+import spiderCompanyHire from './spiderCompanyHire';
+
 export default new class {
   async spiderCompanyInfo(website) {
     // website = urlFormat(website);
@@ -15,7 +17,7 @@ export default new class {
         jar: true,
         maxConnections: 3,
         // This will be called for each crawled page
-        callback: (err, res, done) => {
+        callback: async (err, res, done) => {
           if (err) {
             console.log('Crawler.error', err);
             done();
@@ -33,11 +35,14 @@ export default new class {
           .replace(/\n+|\t+/ig, '')
           .split('公司全称：')
           .join('');
+          const hireSite = await spiderCompanyHire.spiderHireSites(companySite);
+          console.log('hireSite---->', hireSite);
           const obj = {
             productName,
             companyName,
             address,
-            companySite
+            companySite,
+            hireSite
           };
           done();
           result.push(obj);
