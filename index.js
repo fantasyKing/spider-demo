@@ -9,7 +9,7 @@ async function main() {
     process.exit(0);
   });
   try {
-    for (let i = 15; i <= 100; i++) {
+    for (let i = 19; i <= 100; i++) {
       let destination = 'http://www.itjuzi.com/investevents';
       if (i > 2) {
         destination = `${destination}?page=${i}`;
