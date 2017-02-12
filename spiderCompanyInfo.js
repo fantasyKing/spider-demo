@@ -1,8 +1,5 @@
 import Crawler from 'crawler';
 
-import { urlFormat } from './utils';
-
-
 export default new class {
   async spiderCompanyInfo(website) {
     // website = urlFormat(website);
