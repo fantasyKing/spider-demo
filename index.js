@@ -3,8 +3,13 @@ import spiderCompanyInfo from './spiderCompanyInfo';
 import { writeJson, compute } from './utils/';
 
 async function main() {
+  process.on('SIGINT', () => {
+    console.log('process exited...');
+    console.log('compute', compute.getHireSiteNum());
+    process.exit(0);
+  });
   try {
-    for (let i = 1; i <= 100; i++) {
+    for (let i = 15; i <= 100; i++) {
       let destination = 'http://www.itjuzi.com/investevents';
       if (i > 2) {
         destination = `${destination}?page=${i}`;

@@ -4,8 +4,6 @@ import spiderCompanyHire from './spiderCompanyHire';
 
 export default new class {
   async spiderCompanyInfo(website) {
-    // website = urlFormat(website);
-    console.log('website', website);
     const result = [];
     return new Promise((resolve, reject) => {
       this.c = new Crawler({

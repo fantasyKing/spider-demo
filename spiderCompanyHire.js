@@ -42,19 +42,25 @@ export default new class {
             return resolve('');
           }
           console.log('Crawler.success');
-          const $ = res.$;
-          const companySite = $('a');
-          const site = companySite.filter(function filter() {
-            return $(this).text().replace(/\n+|\t+/ig, '') === '加入我们';
-          }).attr('href');
-          const hireSite = urlUtil.complete(site, website);
-          console.log('conpanySIte', website);
-          console.log('companyHireSite', hireSite);
-          if (hireSite) {
-            compute.addHireSiteNum();
+          try {
+            const $ = res.$;
+            const companySite = $('a');
+            const site = companySite.filter(function filter() {
+              return $(this).text().replace(/\n+|\t+/ig, '') === '加入我们';
+            }).attr('href');
+            const hireSite = urlUtil.complete(site, website);
+            console.log('conpanySIte', website);
+            console.log('companyHireSite', hireSite);
+            if (hireSite) {
+              compute.addHireSiteNum();
+            }
+            done();
+            return resolve(hireSite);
+          } catch (error) {
+            console.log('err', error);
+            done();
+            return resolve('');
           }
-          done();
-          return resolve(urlUtil.complete(site, website));
         }
       }]);
     });
