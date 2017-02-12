@@ -4,7 +4,7 @@
   "description": "a node spider example",
   "main": "index.js",
   "scripts": {
-    "start": "babel-node index.js",
+    "start": "babel-node",
     "test": "ava"
   },
   "keywords": [
@@ -14,7 +14,8 @@
   "author": "zhanggj",
   "license": "ISC",
   "dependencies": {
-    "crawler": "^1.0.2"
+    "crawler": "^1.0.2",
+    "jsonfile": "^2.4.0"
   },
   "devDependencies": {
     "ava": "^0.14.0",
@@ -38,5 +39,11 @@
     "eslint-plugin-react": "^5.0.1",
     "request": "^2.79.0",
     "request-promise": "^4.1.1"
+  },
+  "ava": {
+    "babel": "inherit",
+    "require": [
+      "babel-register"
+    ]
   }
 }

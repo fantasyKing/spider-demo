@@ -1,29 +1,25 @@
-import Crawler from 'crawler';
+import spiderCompanySites from './spiderCompanySites';
+import spiderCompanyInfo from './spiderCompanyInfo';
+import { writeJson } from './utils/';
 
-const c = new Crawler({
-  method: 'GET',
-  uri: 'http://www.itjuzi.com/investevents',
-  headers: {
-    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'
-  },
-  maxRedirects: 100,
-  jar: true,
-  maxConnections: 20,
-  // This will be called for each crawled page
-  callback: (err, res, done) => {
-    if (err) {
-      console.log('Crawler.error', err);
-      return done();
+async function main() {
+  try {
+    for (let i = 1; i <= 100; i++) {
+      let destination = 'http://www.itjuzi.com/investevents';
+      if (i > 2) {
+        destination = `${destination}?page=${i}`;
+      }
+      const companySites = await spiderCompanySites.spiderCompanySites(destination);
+      console.log('companySites----->', companySites);
+      const companyinfo = await spiderCompanyInfo.spiderCompanyInfo(companySites);
+      console.log('companyinfo----->', companyinfo);
+      const json = await writeJson.read('./companies.json');
+      json[`page${i}`] = companyinfo;
+      await writeJson.write('./companies.json', json, {});
     }
-    console.log('Crawler.success');
-    const $ = res.$;
-    const liEleArr = $('i.cell.pic a');
-    const companySiteArr = liEleArr.map(function each() {
-      return $(this).attr('href');
-    }).get();
-    console.log(companySiteArr);
-    return done();
+  } catch (err) {
+    console.log('main.err--->', err);
   }
-});
+}
 
-c.queue('http://www.itjuzi.com/investevents');
+main();

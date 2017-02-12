@@ -1,7 +1,8 @@
 import test from 'ava';
 import rq from 'request-promise';
+import { writeJson } from './../utils';
 
-test('findByIds', async t => {
+test.skip('spider', async t => {
   const options = {
     method: 'GET',
     uri: 'https://www.itjuzi.com/',
@@ -17,6 +18,19 @@ test('findByIds', async t => {
     t.truthy(result);
   } catch (err) {
     console.log('err------>', err);
+    t.falsy(false);
+  }
+});
+
+test('writeJson', async t => {
+  try {
+    const json = await writeJson.read('./companies.json');
+    console.log('json', json);
+    json.b = 'c';
+    await writeJson.write('./companies.json', json, {});
+    t.truthy(json);
+  } catch (err) {
+    console.log('err', err);
     t.falsy(false);
   }
 });
