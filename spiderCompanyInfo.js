@@ -16,7 +16,7 @@ export default new class {
         maxRedirects: 100,
         jar: true,
         maxConnections: 3,
-        rateLimit: 200,
+        rateLimit: 100,
         // This will be called for each crawled page
         callback: async (err, res, done) => {
           if (err) {
